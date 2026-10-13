@@ -1,0 +1,190 @@
+LIBRARY IEEE;
+	use work.all;
+	use ieee.std_logic_1164.all;
+	use ieee.numeric_std.all;
+entity logique_testbench is
+end logique_testbench;
+
+architecture arch_logique of logique_testbench is
+	
+	--component Buzzer_Controle
+--	Port (
+--      clk : in std_logic;                
+--        activated: in std_logic;
+--		  bip_intervalle: in integer;
+--		  buzzer_out : out std_logic         
+--   	 );
+--	end component;
+
+
+--	component afficheur_mots
+--	 Port ( clk : in std_logic;
+--           activated : in std_logic; 
+	--		  eteindre: in std_logic;
+--			  afficheur0: out std_logic_vector(6 downto 0);
+--			  afficheur1: out std_logic_vector(6 downto 0);
+--			  afficheur2: out std_logic_vector(6 downto 0);
+--			  afficheur3: out std_logic_vector(6 downto 0)
+--			  );
+--	end component;
+
+	
+--	component Ultrason
+--	port(
+--		trig: out std_logic; 
+--		echo: in std_logic;
+--		clk: in std_logic;
+--		detected: out std_logic);
+--	end component;
+	
+
+--	component Signal_servo
+--	port(
+--		clk : in STD_LOGIC; 
+--		
+--		activated : in STD_LOGIC;
+--		
+--		servo_pwm : out STD_LOGIC
+--	);
+--	end component;
+
+
+--	component Pin_controle
+--	Port (
+--        clk : in  std_logic;               
+--        interrupteurs : in  std_logic_vector(3 downto 0); 
+--        led : out std_logic_vector(3 downto 0);  
+--        system : out std_logic);
+--	end component;
+
+
+--	component LED_clignotante
+--	Port (
+--        clk : in std_logic;   
+--		  activated: in std_logic;            
+--        led_out : out std_logic               
+--    	);
+--	end component;
+
+
+	component logique_principale
+	port(
+		clk: in std_logic; --50MHz
+		
+		--Modules d'entrée
+		--gestion activation/désactivation du système
+		interrupteurs : in  std_logic_vector(3 downto 0); 
+		led_interrupteurs : out std_logic_vector(3 downto 0);
+		--ultrason1
+		echo1: in std_logic;
+		trig1: out std_logic;
+--		--ultrason2
+--		echo2: in std_logic;
+--		trig2: out std_logic;
+		--detecteurPression1
+		boutoninitial: in std_logic;
+		--detecteurPression2
+		boutonfinal: in std_logic;
+		--detecteurPresenceIR
+		presenceIR: in std_logic;
+		--contactDeBarriere
+		contact_barriere: in std_logic;
+		
+		--Modules de sortie
+		--servomoteur
+		servo_pwm: out std_logic;
+		--servomoteur2
+		--servo_pwm_2: out std_logic;
+		--buzzerTrain
+		buzzer_out_train: out std_logic;
+		--buzzerVoiture
+		buzzer_out_voiture: out std_logic;
+		--ledBlink_train
+		ledBlink: out std_logic;
+		--ledVerte_train
+		ledverte_train: out std_logic;
+		--ledVerte_voiture
+		ledverte_voiture: out std_logic;
+		--ledrouge_voiture
+		ledrouge_voiture: out std_logic;
+		--ledorange obstacle
+		ledorange_obstacle: out std_logic;
+		--Afficheurs
+		afficheur0: out std_logic_vector(6 downto 0);
+		afficheur1: out std_logic_vector(6 downto 0);
+		afficheur2: out std_logic_vector(6 downto 0);
+		afficheur3: out std_logic_vector(6 downto 0)
+		
+		--Mode manuel
+		--switch_gotrain: in std_logic;
+		--switch_stoptrain: in std_logic;
+		);
+	end component;
+	
+	signal s_clk : std_logic;
+	signal s_interrupteurs : std_logic_vector(3 downto 0); 
+	signal s_led_interrupteurs : std_logic_vector(3 downto 0); 
+	signal s_echo1 : std_logic;
+	signal s_trig1 : std_logic;
+	signal s_boutoninitial : std_logic;
+	signal s_boutonfinal : std_logic;
+	signal s_presenceIR : std_logic;
+	signal s_contact_barriere : std_logic;
+
+	signal s_servo_pwm : std_logic;
+	signal s_buzzer_out_train : std_logic;
+	signal s_buzzer_out_voiture : std_logic;
+	signal s_ledBlink : std_logic;
+	signal s_ledverte_train : std_logic;
+	signal s_ledrouge_voiture : std_logic;
+	signal s_ledorange_obstacle : std_logic;
+	signal s_afficheur0 : std_logic_vector(6 downto 0);
+	signal s_afficheur1 : std_logic_vector(6 downto 0);
+	signal s_afficheur2 : std_logic_vector(6 downto 0);
+	signal s_afficheur3 : std_logic_vector(6 downto 0);
+	
+		begin 
+		test :
+			logique_principale
+			port map(clk => s_clk,
+ interrupteurs => s_interrupteurs,
+ led_interrupteurs => s_led_interrupteurs,
+ echo1 => s_echo1,
+ trig1 => s_trig1,
+ boutoninitial => s_boutoninitial,
+ boutonfinal => s_boutonfinal,
+			presenceIR => s_presenceIR,
+ contact_barriere => s_contact_barriere,
+ servo_pwm => s_servo_pwm,
+ buzzer_out_train => s_buzzer_out_train,
+ buzzer_out_voiture => s_buzzer_out_voiture,
+ledBlink => s_ledBlink,
+ ledverte_train => s_ledverte_train,
+ ledrouge_voiture => s_ledrouge_voiture,
+ ledorange_obstacle => s_ledorange_obstacle,
+ afficheur0 => s_afficheur0,
+			afficheur1 => s_afficheur1,
+ afficheur2 => s_afficheur2,
+ afficheur3 => s_afficheur3);
+
+		DataTesting : process
+		begin
+		--s_clk <= '0';
+		s_interrupteurs <= "0100";
+		--s_led_interrupteurs <= "0000";
+		s_echo1 <= '0';
+		--s_trig1 <= '0';
+		s_boutoninitial <= '0';
+		s_boutonfinal <= '0';
+		s_presenceIR <= '0';
+		s_contact_barriere <= '0';
+		wait for 800 ns;
+		end process DataTesting;
+	
+
+end arch_logique;
+configuration logique_cfg of logique_testbench is 
+	for arch_logique
+	end for;
+end logique_cfg;
+	

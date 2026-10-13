@@ -1,0 +1,47 @@
+Library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity Signal_servo is
+	port(
+		clk : in STD_LOGIC; 
+		position : in STD_LOGIC_VECTOR(7 downto 0);
+
+		servo_pwm : out STD_LOGIC
+	);
+end Signal_servo;
+
+architecture Bhv_Signal_servo of Signal_servo is
+	constant clk_frequency : integer := 50000000; -- periode de l'horloge50 MHz
+	constant pwm_period : integer := 20000000; -- periode de 20 ms entre chaque
+	constant impulsion_min : integer := 1000000; -- pulsation minimal de 1ms (position minimale)
+	constant impulsion_max : integer := 2000000; -- pulsation maximale de 2ms pour la position maximale
+
+	signal counter : integer range 0 to pwm_period-1 := 0; --Compteur pour l'emission du signal
+	signal pulse_width : integer := min_pulse; --Largeur du signal envoyé
+	signal pwm_signal : STD_LOGIC := '0'; --Signal du PWM interne
+	
+begin
+	process(clk)	--processus pour déterminer la longueur du signal selon la position désirée
+	begin
+		if (rising_edge(clk)) then 
+			--Remettre le compteur à 0 pour chaque période (20ms)
+			if (counter >= pwm_period-1) then
+				counter <= 0;
+			else 
+				counter <= counter+1;
+			end if;
+			
+			pulse_width <= impulsion_min + (to_integer(unsigned(position)) * (impulsion_max-impulsion_min)/255);
+			
+			
+			if (counter < pulse_width) then 
+				pwm_signal <= '1';
+			else
+				pwm_signal <= '0';
+			end if;
+		end if;
+	end process;
+	
+	servo_pwm <= pwm_signal;
+end Bhv_Signal_servo;

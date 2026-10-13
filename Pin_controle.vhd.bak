@@ -1,0 +1,31 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity Pin_controle is
+    Port (
+        clk : in  std_logic;               
+        interrupteurs : in  std_logic_vector(3 downto 0); 
+        led : out std_logic_vector(3 downto 0);  
+        system : out std_logic);
+end Pin_controle;
+
+architecture Bhv_pin of Pin_controle is
+	constant pin_code : std_logic_vector(3 downto 0) := "XXXX";
+	signal s_system: std_logic:= '0';
+begin
+	system <= s_system;
+	process(clk)
+	begin
+		if (rising_edge(clk)) then
+       			if (interrupteurs = pin_code and s_system = '0') then
+                		s_system <= '1';  --active système
+                		led <= (others => '1'); --allume les led    
+            		elsif (interrupteurs = pin_code and s_system = '1') then
+                		s_system <= '0';  -- désactive système 
+                		led <= (others => '0');  -- éteint les led
+			end if;
+        	end if;
+	end process;
+    
+end Bhv_pin;

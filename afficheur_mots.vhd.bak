@@ -1,0 +1,74 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity afficheur_mots is
+    Port ( clk : in std_logic;
+           reset : in std_logic;
+           train_detecte : in std_logic; -- Signal pour détecter le train
+           barriere_baissee : in std_logic; -- Signal pour les barrières
+           segments : out std_logic_vector(6 downto 0) vector (5 downto 0)); -- 6 afficheurs
+end afficheur_mots;
+
+architecture Behavioral of afficheur_mots is
+    type state_type is (STOP, GO);
+    signal current_state : state_type := GO;
+    signal display_segments : std_logic_vector(6 downto 0) vector (5 downto 0); -- Pour stocker l'affichage des segments
+
+    -- Encodage des lettres
+    function encode_letter(letter : integer) return std_logic_vector(6 downto 0) is
+    begin
+        case letter is
+            when 0 => return "1011011"; -- S
+            when 1 => return "0001111"; -- t (avec le segment inférieur activé)
+            when 2 => return "1111110"; -- O
+            when 3 => return "1100111"; -- P
+            when 4 => return "1011111"; -- G (pour GO)
+            when others => return "1111111"; -- Éteindre tous les segments
+        end case;
+    end function;
+
+begin
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            current_state <= GO; -- Commencer en affichant GO
+            display_segments <= (others => "1111111"); -- Éteindre tous les afficheurs
+        elsif rising_edge(clk) then
+            case current_state is
+                when GO =>
+                    if train_detecte = '1' and barriere_baissee = '1' then
+                        display_segments(0) <= encode_letter(0); -- S
+                        display_segments(1) <= encode_letter(1); -- t
+                        display_segments(2) <= encode_letter(2); -- O
+                        display_segments(3) <= encode_letter(3); -- P
+                        display_segments(4) <= "1111111"; -- Éteindre les autres
+                        display_segments(5) <= "1111111";
+                        current_state <= STOP;
+                    else
+                        -- Afficher GO sur les 6 afficheurs
+                        display_segments(0) <= encode_letter(4); -- G
+                        display_segments(1) <= encode_letter(4); -- O
+                        display_segments(2) <= "0000000"; -- Éteindre les autres
+                        display_segments(3) <= "0000000";
+                        display_segments(4) <= "0000000";
+                        display_segments(5) <= "0000000";
+                    end if;
+
+                when STOP =>
+                    if train_detecte = '0' and barriere_baissee = '0' then
+                        display_segments(0) <= encode_letter(4); -- G
+                        display_segments(1) <= encode_letter(4); -- O
+                        display_segments(2) <= "0000000"; -- Éteindre les autres
+                        display_segments(3) <= "0000000";
+                        display_segments(4) <= "0000000";
+                        display_segments(5) <= "0000000";
+                        current_state <= GO; -- Revenir à GO
+                    end if;
+            end case;
+        end if;
+    end process;
+
+    -- Assignation des segments à la sortie
+    segments <= display_segments;
+
+end Behavioral;

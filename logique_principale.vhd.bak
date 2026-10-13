@@ -1,0 +1,51 @@
+library IEEE;
+use ieee.std_logic_1164;
+
+
+entity logique_principale is
+	port(
+		detecteurtrain1: in std_logic;
+		detecteurtrain2: in std_logic;
+		detectionobs: in std_logic;
+		clk: in std_logic;
+		signvoit: out std_logic;
+		traingo: inout std_logic;
+		trainstop: out std_logic;
+		barriere: out std_logic;
+
+end logique_principale;
+
+
+architecture bhv_principal of logique_principale is
+
+	signal sorties: std_logic_vector(4 downto 0);
+	signal traindetec: std_logic :=0;
+	signal traindetec_prec: std_logic :=0;
+	signal traingo_prec: std_logic :=0;
+	
+	begin --begin architecture
+	process(traingo_prec, traindetec_prec, detecteurtrain1, detecteurtrain2, detectionobs) is
+		begin --begin process
+		if(traingo_prec = '0' AND traindetec_prec = '0' AND detecteurtrain1 = '0') then
+			sorties <= "00000";
+		elsif(traingo_prec = '0' AND traindetec_prec = '0' AND detecteurtrain1 = '1') then
+			sorties <= "00001";
+		elsif(traingo_prec = '0' AND traindetec_prec = '1' AND detectionobs = '0') then
+			sorties <= "11011";
+		elsif(traingo_prec = '0' AND traindetec_prec = '1' AND detectionobs = '1') then
+			sorties <= "10101";
+		elsif(traingo_prec = '1' AND detecteurtrain2 = '0') then
+			sorties <= "11011";
+		elsif(traingo_prec = '1' AND detecteurtrain2 = '1') then
+			sorties <= "00000";
+		end if;
+			
+			signvoit <= sorties(4);
+			traingo <= sorties(3);
+			trainstop <= sorties(2);
+			barriere <= sorties(1);
+			traindetec <= sorties(0);
+			
+			traingo_prec <= traingo;
+			traindetec_prec <= traindetec;
+		end process;

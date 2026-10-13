@@ -1,0 +1,42 @@
+LIBRARY IEEE;
+	use work.all;
+entity logique_testbench is
+end logique_testbench;
+
+architecture arch_logique of logique_testbench is
+	
+	component Buzzer_Controle
+	
+	end component;
+
+
+	component afficheur_mots
+
+	end component;
+
+	
+	component Ultrason
+
+	end component;
+	
+
+	component Signal_servo
+
+	end component;
+
+
+	component Pin_controle
+
+	end component;
+
+
+	component LED_clignotante
+
+	end component;
+
+
+	component logique_principale
+
+	end component;
+end arch_logique;
+	

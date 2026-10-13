@@ -1,0 +1,59 @@
+# Compile of Ultrason.vhd was successful.
+do Cas1.do
+# vsim -voptargs=""+acc"" work.logique_cfg 
+# Start time: 15:42:50 on Nov 16,2024
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.logique_cfg#1
+# Loading work.logique_testbench(arch_logique)#1
+# Loading work.logique_principale(bhv_principal)#1
+# Loading work.pin_controle(bhv_pin)#1
+# Loading work.ultrason(bhv_ultrason)#1
+# Loading work.signal_servo(bhv_signal_servo)#1
+# Loading work.buzzer_controle(bhv_buzzer)#1
+# Loading work.led_clignotante(bhv_led)#1
+# Loading work.afficheur_mots(behavioral)#1
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.objects.interior.cs.body.tree
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: clia05  Hostname: UQO-HW60P23  ProcessID: 15104
+#           Attempting to use alternate WLF file "./wlft27swhk".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlft27swhk
+# 0 ns
+# 236250 us
+quit -sim
+# End time: 15:46:47 on Nov 16,2024, Elapsed time: 0:03:57
+# Errors: 0, Warnings: 4
+do Cas1.do
+# vsim -voptargs=""+acc"" work.logique_cfg 
+# Start time: 15:46:52 on Nov 16,2024
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.logique_cfg#1
+# Loading work.logique_testbench(arch_logique)#1
+# Loading work.logique_principale(bhv_principal)#1
+# Loading work.pin_controle(bhv_pin)#1
+# Loading work.ultrason(bhv_ultrason)#1
+# Loading work.signal_servo(bhv_signal_servo)#1
+# Loading work.buzzer_controle(bhv_buzzer)#1
+# Loading work.led_clignotante(bhv_led)#1
+# Loading work.afficheur_mots(behavioral)#1
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.objects.interior.cs.body.tree
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: clia05  Hostname: UQO-HW60P23  ProcessID: 15104
+#           Attempting to use alternate WLF file "./wlfthg29k2".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlfthg29k2
+# 0 ns
+# 446250 us
+run 175ms
+# End time: 16:54:13 on Nov 16,2024, Elapsed time: 1:07:21
+# Errors: 0, Warnings: 4
